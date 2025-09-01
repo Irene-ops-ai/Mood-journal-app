@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Journal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+  <h1>📝 My Journal</h1>
+
+  <form action="/add" method="POST">
+    <input type="text" name="title" placeholder="Title" required>
+    <textarea name="content" placeholder="Write your thoughts..." required></textarea>
+    <button type="submit">Add Entry</button>
+  </form>
+
+  <h2>Journal Entries</h2>
+  {% for entry in entries %}
+    <div class="entry">
+      <h3>{{ entry['title'] }}</h3>
+      <p>{{ entry['content'] }}</p>
+      <small>{{ entry['created_at'] }}</small>
+    </div>
+  {% else %}
+    <p>No entries yet.</p>
+  {% endfor %}
+
+  <h2>💰 Support with a Donation</h2>
+  <form action="/donate" method="POST">
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="number" name="amount" step="0.01" placeholder="Amount (KES)" required>
+    <button type="submit">Donate</button>
+  </form>
+
+  <a href="/dashboard">📊 View Dashboard</a>
+</body>
+</html>
