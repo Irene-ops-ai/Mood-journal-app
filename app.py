@@ -2,10 +2,6 @@ from flask import Flask, render_template, request, redirect
 from intasend import APIService
 import sqlite3
 import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env
-load_dotenv()
 
 # Debug: print to confirm keys are being loaded
 print("SECRET:", os.getenv("INTASEND_SECRET_KEY"))
