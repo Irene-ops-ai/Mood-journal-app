@@ -47,6 +47,41 @@ def add_entry():
     conn.close()
     return redirect("/")
 
+@app.route("/edit/<int:entry_id>", methods=["GET", "POST"])
+def edit_entry(entry_id):
+    conn = get_db()
+    entry = conn.execute(
+        "SELECT * FROM journal_entries WHERE id = ?", (entry_id,)
+    ).fetchone()
+
+    if not entry:
+        conn.close()
+        return "Entry not found", 404
+
+    if request.method == "POST":
+        title = request.form["title"]
+        content = request.form["content"]
+        conn.execute(
+            "UPDATE journal_entries SET title = ?, content = ? WHERE id = ?",
+            (title, content, entry_id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect("/")
+
+    conn.close()
+    return render_template("edit.html", entry=entry)
+
+
+@app.route("/delete/<int:entry_id>", methods=["POST"])
+def delete_entry(entry_id):
+    conn = get_db()
+    conn.execute("DELETE FROM journal_entries WHERE id = ?", (entry_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
+
 @app.route("/donate", methods=["POST"])
 def donate():
     phone = request.form["phone"]
